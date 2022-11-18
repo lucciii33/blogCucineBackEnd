@@ -3,18 +3,20 @@ const mongoose = require('mongoose')
 const articleSchema = mongoose.Schema({
     image: {
         type: String,
-        require: false
+        require: true
     },
     title: {
         type: String,
-        require: false
+        require: true
     },
     ingredients: {
         type: String,
-        require: false
+        require: true
     },
     description: {
         type: String,
-        require: false 
+        require: true
     }
 })
+
+module.exports = mongoose.model('Article', articleSchema )
