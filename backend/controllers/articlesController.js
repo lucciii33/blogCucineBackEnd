@@ -33,14 +33,38 @@ const postArticle = asyncHandler(async(req, res) => {
 //@route PUT /api/articles/:id
 //private
 const editArticle = asyncHandler(async(req, res) => {
-    res.status(200).json({ message: `update article ${req.params.id}`  })
+    const article = await Article.findById(req.params.id)
+
+    
+    if(!article){
+     res.status(400)
+    throw new Error('something is wrong') 
+    }
+
+    const updateArticle = await Article.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+    })
+
+
+    res.status(200).json(updateArticle)
 })
 
 //@description post articles
 //@route DELETE /api/articles/:id
 //private
 const deleteArticle = asyncHandler(async(req, res) => {
-    res.status(200).json({ message: `delete article ${req.params.id}`  })
+    const article = await Article.findById(req.params.id)
+
+    
+    if(!article){
+     res.status(400)
+    throw new Error('something is wrong') 
+    }
+
+   await article.remove()
+
+
+    res.status(200).json({ id: req.params.id  })
 })
 
 
