@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 
+
 const articleSchema = mongoose.Schema({
+    user:{
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     image: {
         type: String,
         require: true
@@ -10,7 +16,7 @@ const articleSchema = mongoose.Schema({
         require: true
     },
     ingredients: {
-        type: String,
+        type: Object,
         require: true
     },
     description: {
