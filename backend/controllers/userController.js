@@ -17,12 +17,14 @@ if(user && (await bcrypt.compare(password, user.password))){
         _id: user.id,
         name: user.name,
         email: user.email,
+        token: generateToken(user._id),
     })
 }else{
     res.status(400)
     throw new Error('invalid credetials')
 }
 })
+
 
 //@description register new user
 //@route POst /api/users
@@ -51,14 +53,16 @@ const registerUser = asyncHandler(async (req, res)=>{
     const user = await User.create({
         name, 
         email,
-        password: hashPassword 
+        password: hashPassword,
+        
     })
 
     if(user){
         res.status(201).json({
             _id: user.id,
             name: user.name,
-            email: user.email
+            email: user.email,
+            token: generateToken(user._id)
         })
     }else{
         res.status(400)
@@ -69,14 +73,25 @@ const registerUser = asyncHandler(async (req, res)=>{
 
 //@description get user data
 //@route GET /api/users/me
-//public
+//private
 const getMe = asyncHandler(async(req, res)=>{
-    res.json({
-        message: 'user me info'
+    const {_id, name, email,} = await User.findById(req.user.id)
+
+    res.status(200).json({
+        id: _id,
+        name,
+        email
     })
 })
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+      expiresIn: '30d',
+    })
+  }
 module.exports = {
     registerUser,
     loginUser,
-    getMe
+    getMe,
+    generateToken
 }
