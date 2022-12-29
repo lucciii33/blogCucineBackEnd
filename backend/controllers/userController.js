@@ -19,6 +19,7 @@ if(user && (await bcrypt.compare(password, user.password))){
         email: user.email,
         token: generateToken(user._id),
     })
+    console.log(token)
 }else{
     res.status(400)
     throw new Error('invalid credetials')

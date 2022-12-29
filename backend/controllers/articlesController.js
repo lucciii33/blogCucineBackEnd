@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler')
 const Article = require('../models/articleModel')
+const User = require('../models/userModel')
 
 //@description get articles
 //@route GET /api/articles
@@ -24,7 +25,8 @@ const postArticle = asyncHandler(async(req, res) => {
     image: data.image,
     title: data.title,
     ingredients: data.ingredients,
-    description: data.description
+    description: data.description,
+    user: data.user,
    })
     res.status(200).json(createArticle)
 })
